@@ -1,5 +1,6 @@
 package com.gsd.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gsd.system.entity.SysUser;
 import com.gsd.system.mapper.SysUserMapper;
 import com.gsd.system.service.SysUserService;
@@ -17,4 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
+    @Override
+    public SysUser getUserByUserName(String username) {
+        QueryWrapper<SysUser> query = new QueryWrapper<>();
+        query.lambda().eq(SysUser::getUsername, username);
+        SysUser sysUser = this.baseMapper.selectOne(query);
+        return sysUser;
+    }
 }

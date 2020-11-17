@@ -1,7 +1,11 @@
 package com.gsd.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.util.Collection;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -9,6 +13,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * <p>
@@ -22,7 +28,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(value="SysUser对象", description="用户表")
-public class SysUser implements Serializable {
+public class SysUser implements UserDetails,Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -81,5 +87,26 @@ public class SysUser implements Serializable {
     @ApiModelProperty(value = "加密盐")
     private String salt;
 
+    @TableField(exist = false)
+    Collection<? extends GrantedAuthority> authorities;
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired == 1 ? true : false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked == 1 ? true : false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isCredentialsNonExpired == 1 ? true : false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled == 1 ? true : false;
+    }
 }
