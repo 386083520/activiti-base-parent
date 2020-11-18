@@ -8,6 +8,8 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -89,6 +91,9 @@ public class SysUser implements UserDetails,Serializable {
 
     @TableField(exist = false)
     Collection<? extends GrantedAuthority> authorities;
+
+    @TableField(exist = false)
+    List<SysPermission> permissionList;
 
     @Override
     public boolean isAccountNonExpired() {

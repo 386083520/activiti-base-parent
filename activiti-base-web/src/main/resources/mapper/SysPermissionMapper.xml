@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gsd.system.mapper.SysPermissionMapper">
+    <select id="getPermissionListByUserId" resultType="com.gsd.system.entity.SysPermission">
+      SELECT DISTINCT p.*
+      FROM
+      sys_user as u
+      LEFT JOIN
+      sys_user_role as ur on u.id = ur.user_id
+      LEFT JOIN
+      sys_role_permission as rp on rp.role_id = ur.role_id
+      LEFT JOIN
+      sys_permission as p on rp.permission_id = p.id
+      WHERE
+      u.id = #{userId}
+      ORDER BY p.order_num asc
+    </select>
+
+    <select id="getPermissionListByRoleId" resultType="com.gsd.system.entity.SysPermission">
+        SELECT DISTINCT p.*
+        FROM
+        sys_permission p
+        JOIN
+        sys_role_permission rp
+        on rp.permission_id = p.id
+        JOIN
+        sys_role r
+        ON r.id = rp.role_id
+        WHERE r.id = #{roleId}
+    </select>
 
 </mapper>

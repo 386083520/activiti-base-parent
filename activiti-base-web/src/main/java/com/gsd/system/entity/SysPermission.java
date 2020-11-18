@@ -1,9 +1,15 @@
 package com.gsd.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.util.ArrayList;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -70,5 +76,6 @@ public class SysPermission implements Serializable {
     @ApiModelProperty(value = "父级菜单名称")
     private String parentName;
 
-
+    @TableField(exist = false)
+    private List<SysPermission> children = new ArrayList<>();
 }
