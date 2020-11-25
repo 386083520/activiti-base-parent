@@ -26,3 +26,5 @@ mybatis-plus:
 jwt:
   secret: com.gsd
   expiration: 300000
+gsd:
+  loginUrl: /system/sys-user/login
