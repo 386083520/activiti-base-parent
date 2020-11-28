@@ -25,6 +25,7 @@ mybatis-plus:
         logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 jwt:
   secret: com.gsd
-  expiration: 300000
+  expiration: 30000
 gsd:
   loginUrl: /system/sys-user/login
+  imgUrl: /system/sys-user/image

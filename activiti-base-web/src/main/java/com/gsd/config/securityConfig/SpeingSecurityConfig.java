@@ -2,10 +2,7 @@ package com.gsd.config.securityConfig;
 
 import com.gsd.security.detailservice.CustomerUserDetailsService;
 import com.gsd.security.filter.CheckTokenFilter;
-import com.gsd.security.handler.CustomAccessDeineHandler;
-import com.gsd.security.handler.CustomizeAuthenticationEntryPoint;
-import com.gsd.security.handler.LoginFailureHandler;
-import com.gsd.security.handler.LoginSuccessHandler;
+import com.gsd.security.handler.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +30,8 @@ public class SpeingSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomAccessDeineHandler customAccessDeineHandler;
     @Autowired
     private CheckTokenFilter checkTokenFilter;
+    @Autowired
+    private CustomLogoutSuccessHandler customLogoutSuccessHandler;
     @Bean
     public PasswordEncoder passwordEncoder() {
         // 明文+随机盐值》加密存储
@@ -64,6 +63,10 @@ public class SpeingSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customizeAuthenticationEntryPoint)
-                .accessDeniedHandler(customAccessDeineHandler);
+                .accessDeniedHandler(customAccessDeineHandler)
+                .and()
+                .logout()
+                .logoutUrl("/system/sys-user/loginout")
+                .logoutSuccessHandler(customLogoutSuccessHandler);
     }
 }

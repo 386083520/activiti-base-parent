@@ -8,7 +8,7 @@ public class ResultUtils {
      * 无参数返回
      * @return
      */
-    public static ResultVo succcess() {
+    public static ResultVo success() {
         return Vo(null, CodeStatus.SUCCESS_CODE, null);
     }
     public static ResultVo success(String msg){

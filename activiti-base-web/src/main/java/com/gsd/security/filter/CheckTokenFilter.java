@@ -4,13 +4,14 @@ import com.gsd.jwt.JwtUtils;
 import com.gsd.security.detailservice.CustomerUserDetailsService;
 import com.gsd.security.exception.TokenException;
 import com.gsd.security.handler.LoginFailureHandler;
-import com.gsd.security.imageCode.ImageCodeException;
+import com.gsd.security.exception.ImageCodeException;
 import com.gsd.system.controller.SysUserController;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -27,6 +28,8 @@ import java.io.IOException;
 public class CheckTokenFilter extends OncePerRequestFilter{
     @Value("${gsd.loginUrl}")
     private String loginUrl;
+    @Value("${gsd.imgUrl}")
+    private String imgUrl;
     @Autowired
     private LoginFailureHandler loginFailureHandler;
     @Autowired
@@ -43,7 +46,15 @@ public class CheckTokenFilter extends OncePerRequestFilter{
                 loginFailureHandler.onAuthenticationFailure(request, response, e);
             }
         } else {
-            validateToken(request);
+            String requestImgUrl = request.getRequestURI();
+            if(!requestImgUrl.equals(imgUrl)) {
+               try{
+                   validateToken(request);
+               }catch (AuthenticationException e) {
+                   loginFailureHandler.onAuthenticationFailure(request, response, e);
+               }
+            }
+
         }
         filterChain.doFilter(request, response);
     }

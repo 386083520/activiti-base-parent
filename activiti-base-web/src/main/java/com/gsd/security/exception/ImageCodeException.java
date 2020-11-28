@@ -1,4 +1,4 @@
-package com.gsd.security.imageCode;
+package com.gsd.security.exception;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
 

@@ -2,8 +2,10 @@ package com.gsd.security.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.gsd.result.CodeStatus;
 import com.gsd.result.ResultUtils;
-import com.gsd.security.imageCode.ImageCodeException;
+import com.gsd.security.exception.TokenException;
+import com.gsd.security.exception.ImageCodeException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -23,6 +25,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         httpServletResponse.setContentType("application/json;charset=UTF-8");
         ServletOutputStream out = httpServletResponse.getOutputStream();
         String str = null;
+        int code = CodeStatus.ERROR_CODE;
         if (e instanceof AccountExpiredException) {
             //账号过期
             str = "账户过期，登录失败!";
@@ -44,11 +47,15 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         }else if(e instanceof ImageCodeException){
             //验证码异常
             str = e.getMessage();
-        }else{
+        }else if(e instanceof TokenException){
+            //验证码异常
+            code = CodeStatus.NO_LOGIN;
+            str = e.getMessage();
+        } else{
             //其他错误
             str = "登录失败!";
         }
-        String rstr = JSONObject.toJSONString(ResultUtils.error(str),
+        String rstr = JSONObject.toJSONString(ResultUtils.error(str, code),
                 SerializerFeature.DisableCircularReferenceDetect);
         out.write(rstr.getBytes("UTF-8"));
         out.flush();
