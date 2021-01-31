@@ -2,6 +2,9 @@ package com.gsd.system.mapper;
 
 import com.gsd.system.entity.SysRolePermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-11-04
  */
 public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
-
+    boolean saveRolePermission(@Param("roleId") Long roleId, @Param("permissionIds") List<Long> permissionIds);
 }
